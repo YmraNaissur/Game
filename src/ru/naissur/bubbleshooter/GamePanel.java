@@ -19,7 +19,8 @@ public class GamePanel extends JPanel implements Runnable {
     private BufferedImage image;
     private Graphics2D g;
 
-    private GameBackground background;  // фон игрового поля
+    public static GameBackground background;  // фон игрового поля
+    public static Player player; // игрок
 
     // Конструктор
     public GamePanel() {
@@ -38,8 +39,10 @@ public class GamePanel extends JPanel implements Runnable {
     public void run() {
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         background = new GameBackground();  // инициализируем фон
+        player = new Player();  // инициализируем игрока
 
         while (true) { // TODO состояния игры
 
@@ -59,12 +62,16 @@ public class GamePanel extends JPanel implements Runnable {
     public void gameUpdate() {
         // Обновление фона
         background.update();
+        // Обновление игрока
+        player.update();
     }
 
     // отрисовка игровых компонентов
     public void gameRender() {
         // Отрисовка фона
         background.draw(g);
+        // Отрисовка игрока
+        player.draw(g);
     }
 
     private void gameDraw() {

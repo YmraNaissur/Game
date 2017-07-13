@@ -3,13 +3,13 @@ package ru.naissur.bubbleshooter;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * naissur
  * 11.07.2017
  */
 public class GamePanel extends JPanel implements Runnable {
-
     // Поля
     public static final int WIDTH = 400;    // ширина
     public static final int HEIGHT = 400;   // высота
@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static GameBackground background;  // фон игрового поля
     public static Player player; // игрок
+    public static ArrayList<Bullet> bullets;    // список с пулями
 
     // Конструктор
     public GamePanel() {
@@ -44,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         background = new GameBackground();  // инициализируем фон
         player = new Player();  // инициализируем игрока
+        bullets = new ArrayList<>(); // инициализируем список с пулями
 
         while (true) { // TODO состояния игры
 
@@ -65,6 +67,10 @@ public class GamePanel extends JPanel implements Runnable {
         background.update();
         // Обновление игрока
         player.update();
+        // Обновление пуль
+        for (Bullet b : bullets) {
+            b.update();
+        }
     }
 
     // отрисовка игровых компонентов
@@ -73,6 +79,10 @@ public class GamePanel extends JPanel implements Runnable {
         background.draw(g);
         // Отрисовка игрока
         player.draw(g);
+        // Отрисовка пуль
+        for (Bullet b : bullets) {
+            b.draw(g);
+        }
     }
 
     private void gameDraw() {

@@ -71,8 +71,9 @@ public class Player {
         // если движемся по диагонали, коэффициенты смещения рассчитываются немного по-другому
         // иначе скорость по диагонали будет больше, чем скорость по горизонтали/вертикали
         if (up && left || up && right || down && left || down && right) {
-            dy = dy * Math.sin(45);
-            dx = dx * Math.cos(45);
+            double angle = Math.toRadians(45); // переведем 45 градусов в радианы
+            dy = dy * Math.sin(angle);
+            dx = dx * Math.cos(angle);
         }
 
         // обновляем координаты

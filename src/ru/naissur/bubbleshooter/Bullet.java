@@ -35,4 +35,9 @@ public class Bullet {
         g.setColor(color);
         g.fillOval((int) x, (int) y, r, 2 * r);
     }
+
+    // если пуля улетела за экран, возвращает true
+    public boolean isRemoveNeeded() {
+        return y < 0;
+    }
 }

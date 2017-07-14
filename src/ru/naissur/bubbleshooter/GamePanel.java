@@ -48,7 +48,6 @@ public class GamePanel extends JPanel implements Runnable {
         bullets = new ArrayList<>(); // инициализируем список с пулями
 
         while (true) { // TODO состояния игры
-
             gameUpdate();
             gameRender();
             gameDraw();
@@ -65,11 +64,19 @@ public class GamePanel extends JPanel implements Runnable {
     public void gameUpdate() {
         // Обновление фона
         background.update();
+
         // Обновление игрока
         player.update();
+
         // Обновление пуль
-        for (Bullet b : bullets) {
+        for (int i = 0; i < bullets.size(); i++) {
+            Bullet b = bullets.get(i);
             b.update();
+            // если пуля вышла за границы экрана, удаляем ее
+            if (b.isRemoveNeeded()) {
+                bullets.remove(i);
+                i--;
+            }
         }
     }
 
@@ -77,8 +84,10 @@ public class GamePanel extends JPanel implements Runnable {
     public void gameRender() {
         // Отрисовка фона
         background.draw(g);
+
         // Отрисовка игрока
         player.draw(g);
+
         // Отрисовка пуль
         for (Bullet b : bullets) {
             b.draw(g);

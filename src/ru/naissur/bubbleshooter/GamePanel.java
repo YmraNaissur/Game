@@ -22,6 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static GameBackground background;  // фон игрового поля
     public static Player player; // игрок
     public static ArrayList<Bullet> bullets;    // список с пулями
+    public static ArrayList<Enemy> enemies; // список с врагами
 
     // Конструктор
     public GamePanel() {
@@ -45,7 +46,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         background = new GameBackground();  // инициализируем фон
         player = new Player();  // инициализируем игрока
-        bullets = new ArrayList<>(); // инициализируем список с пулями
+        bullets = new ArrayList<>();    // инициализируем список с пулями
+        enemies = new ArrayList<>();    // инициализируем список с врагами
+
+        // тест врагов, потом удалить
+        enemies.add(new Enemy(1, 1));
+        enemies.add(new Enemy(1, 1));
+        // конец теста врагов
 
         while (true) { // TODO состояния игры
             gameUpdate();
@@ -78,6 +85,12 @@ public class GamePanel extends JPanel implements Runnable {
                 i--;
             }
         }
+
+        // Обновление врагов
+        for (int i = 0; i < enemies.size(); i++) {
+            Enemy e = enemies.get(i);
+            e.update();
+        }
     }
 
     // отрисовка игровых компонентов
@@ -91,6 +104,11 @@ public class GamePanel extends JPanel implements Runnable {
         // Отрисовка пуль
         for (Bullet b : bullets) {
             b.draw(g);
+        }
+
+        // Отрисовка врагов
+        for (Enemy e : enemies) {
+            e.draw(g);
         }
     }
 

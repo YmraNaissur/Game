@@ -40,4 +40,16 @@ public class Bullet {
     public boolean isRemoveNeeded() {
         return y < 0;
     }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public int getR() {
+        return r;
+    }
 }

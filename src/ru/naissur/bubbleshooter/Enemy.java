@@ -34,6 +34,7 @@ public class Enemy {
                         x = Math.random() * GamePanel.WIDTH;
                         y = 0; // враг вылетает сверху экрана
                         speed = 2;
+                        health = 10;
                         double angle = Math.toRadians(Math.random()*360); // случайный угол
                         dx = Math.sin(angle) * speed;
                         dy = Math.cos(angle) * speed;
@@ -47,6 +48,19 @@ public class Enemy {
     }
 
     // Методы
+
+    // Проверяем, есть ли здоровье, и если нет, удаляем врага из списка
+    public boolean isRemoveNeeded() {
+        if (health <= 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public void hit() {
+        health--;
+    }
+
     public void update() {
         x += dx;
         y += dy;
@@ -64,6 +78,18 @@ public class Enemy {
         g.setStroke(new BasicStroke(3));
         g.setColor(color.darker());
         g.drawOval((int) x - r, (int) y - r, 2 * r, 2 * r);
-        g.setStroke(new BasicStroke(3));
+        g.setStroke(new BasicStroke(1));
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public int getR() {
+        return r;
     }
 }

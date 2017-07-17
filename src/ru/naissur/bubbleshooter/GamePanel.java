@@ -106,17 +106,41 @@ public class GamePanel extends JPanel implements Runnable {
                 double dist = Math.sqrt(dx * dx + dy * dy);
 
                 // если дистанция меньше радиуса врага + радиус пули, то удаляем врага из списка
-                if ((int)dist < e.getR() + b.getR()) {
+                if ((int)dist <= e.getR() + b.getR()) {
                     e.hit();
                     bullets.remove(j);
-                    break;
+                    j--;
+
+                    // если здоровье у врага закончилось, удаляем его из списка
+                    if (e.isRemoveNeeded()) {
+                        enemies.remove(i);
+                        i--;
+                        break;
+                    }
                 }
             }
+        }
 
-            // если здоровье у врага закончилось, удаляем его из списка
-            if (e.isRemoveNeeded()) {
-                enemies.remove(i);
-                i--;
+        // Анализ столкновения игрока и врага
+        for (int i = 0; i < enemies.size(); i++) {
+            Enemy e = enemies.get(i);
+            double ex = e.getX();   // получаем координату x врага
+            double ey = e.getY();   // получаем координатy y врага
+            double px = player.getX();  // получаем координату x игрока
+            double py = player.getY();  // получаем координату y игрока
+            double dx = ex - px;
+            double dy = ey - py;
+            double dist = Math.sqrt(dx * dx + dy * dy);
+
+            // если дистанция меньше радиуса врага + радиус игрока, то столкновение
+            if ((int)dist <= e.getR() + player.getR()) {
+                e.hit();
+                player.hit();
+
+                if (e.isRemoveNeeded()) {
+                    enemies.remove(i);
+                    i--;
+                }
             }
         }
     }

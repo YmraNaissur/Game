@@ -25,6 +25,7 @@ public class Player {
     public static boolean left;
     public static boolean right;
     public static boolean isFiring; // стреляет ли игрок
+    private int health; // здоровье
 
     // Конструктор
     public Player() {
@@ -37,6 +38,7 @@ public class Player {
         dy = 0;
 
         speed = 5;
+        health = 3;
 
         color01 = Color.WHITE;
         color02 = Color.RED;
@@ -93,5 +95,23 @@ public class Player {
         g.setColor(color01.darker());
         g.drawOval((int) x - r, (int) y - r, 2 * r, 2 * r);
         g.setStroke(new BasicStroke(1));
+    }
+
+    // Если игрок сталкивается с врагом
+    public void hit() {
+        health--;
+        System.out.println("Healt: " + health);
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public int getR() {
+        return r;
     }
 }

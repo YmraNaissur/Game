@@ -34,7 +34,7 @@ public class Enemy {
                         x = Math.random() * GamePanel.WIDTH;
                         y = 0; // враг вылетает сверху экрана
                         speed = 2;
-                        health = 10;
+                        health = 3;
                         double angle = Math.toRadians(Math.random()*360); // случайный угол
                         dx = Math.sin(angle) * speed;
                         dy = Math.cos(angle) * speed;

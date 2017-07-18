@@ -29,9 +29,9 @@ public class Player {
 
     // Конструктор
     public Player() {
-        // игрок изначально будет в центре игрового поля
+        // игрок изначально будет на 50 пикселей ниже центра игрового поля
         x = GamePanel.WIDTH / 2;
-        y = GamePanel.HEIGHT / 2;
+        y = GamePanel.HEIGHT / 2 + 50;
 
         r = 5;
         dx = 0;

@@ -23,6 +23,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static Player player; // игрок
     public static ArrayList<Bullet> bullets;    // список с пулями
     public static ArrayList<Enemy> enemies; // список с врагами
+    public static Wave wave;    // волна врагов
 
     // Конструктор
     public GamePanel() {
@@ -48,11 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
         player = new Player();  // инициализируем игрока
         bullets = new ArrayList<>();    // инициализируем список с пулями
         enemies = new ArrayList<>();    // инициализируем список с врагами
-
-        // тест врагов, потом удалить
-        enemies.add(new Enemy(1, 1));
-        enemies.add(new Enemy(1, 1));
-        // конец теста врагов
+        wave = new Wave();  // инициализируем объект, отвечающий за волны врагов
 
         while (true) { // TODO состояния игры
             gameUpdate();
@@ -143,6 +140,9 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         }
+
+        // Обновление волны
+        wave.update();
     }
 
     // отрисовка игровых компонентов
@@ -161,6 +161,11 @@ public class GamePanel extends JPanel implements Runnable {
         // Отрисовка врагов
         for (Enemy e : enemies) {
             e.draw(g);
+        }
+
+        // Отрисовка волны
+        if (wave.isWaveTextToBeShowed()) {
+            wave.draw(g);
         }
     }
 

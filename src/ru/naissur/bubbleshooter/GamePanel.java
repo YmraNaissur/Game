@@ -19,6 +19,11 @@ public class GamePanel extends JPanel implements Runnable {
     private BufferedImage image;
     private Graphics2D g;
 
+    private int fps; // количество кадров в секунду
+    private double millisPerFrame; // количество миллисекунд на один кадр
+    private long fpsTimer;
+    private int sleepTime;  // результирующее время для Thread.sleep()
+
     public static GameBackground background;  // фон игрового поля
     public static Player player; // игрок
     public static ArrayList<Bullet> bullets;    // список с пулями
@@ -41,6 +46,11 @@ public class GamePanel extends JPanel implements Runnable {
     // Методы
     @Override
     public void run() {
+
+        fps = 30;   // указываем желаемое значение FPS
+        millisPerFrame = 1000 / fps;    // сколько миллисекунд должно уходить на один кадр с указанным FPS
+        sleepTime = 0;
+
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -52,15 +62,36 @@ public class GamePanel extends JPanel implements Runnable {
         wave = new Wave();  // инициализируем объект, отвечающий за волны врагов
 
         while (true) { // TODO состояния игры
+            // инициализируем таймер PFS текущим временем
+            fpsTimer = System.currentTimeMillis();
+
             gameUpdate();
             gameRender();
             gameDraw();
 
+            /*
+                Следующая строка и условный оператор нужны для того, чтобы получать
+                примерно одинаковое время смены кадров независимо от того, как долго выполняется цикл
+             */
+            fpsTimer = (System.currentTimeMillis() - fpsTimer);
+
+            if (millisPerFrame > fpsTimer) {
+                sleepTime = (int)(millisPerFrame - fpsTimer);
+            } else {
+                sleepTime = 1;
+            }
+
             try {
-                Thread.sleep(33);   // TODO fps
+                Thread.sleep(sleepTime);
+
+                // Чтобы мониторить FPS, раскомментить следующую строку
+                // System.out.println(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            fpsTimer = 0;
+            sleepTime = 1;
         }
     }
 

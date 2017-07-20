@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class GamePanel extends JPanel implements Runnable {
     // Поля
-    public static final int WIDTH = 400;    // ширина
-    public static final int HEIGHT = 400;   // высота
+    public static final int WIDTH = 600;    // ширина
+    public static final int HEIGHT = 600;   // высота
 
     private Thread thread = new Thread(this);   // создаем поток
 
@@ -36,7 +36,9 @@ public class GamePanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(WIDTH, HEIGHT)); // установили размеры панели
         setFocusable(true);
         requestFocus();
-        addKeyListener(new Listeners()); // добавляем слушателей
+        addKeyListener(new Listeners()); // добавляем слушателя клавиатуры
+        addMouseMotionListener(new Listeners());    // добавляем слушателя движения мыши
+        addMouseListener(new Listeners());  // добавляем слушателя мыши
     }
 
     public void start() {

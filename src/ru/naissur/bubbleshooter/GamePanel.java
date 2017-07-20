@@ -24,11 +24,20 @@ public class GamePanel extends JPanel implements Runnable {
     private long fpsTimer;
     private int sleepTime;  // результирующее время для Thread.sleep()
 
+    // состояния игры
+    private enum STATES {
+        MENU,
+        PLAY
+    }
+
+    private STATES state = STATES.MENU; // по умолчанию находимся в меню
+
     public static GameBackground background;  // фон игрового поля
     public static Player player; // игрок
     public static ArrayList<Bullet> bullets;    // список с пулями
     public static ArrayList<Enemy> enemies; // список с врагами
     public static Wave wave;    // волна врагов
+    public static Menu menu;    // игровое меню
 
     // Конструктор
     public GamePanel() {
@@ -62,23 +71,35 @@ public class GamePanel extends JPanel implements Runnable {
         bullets = new ArrayList<>();    // инициализируем список с пулями
         enemies = new ArrayList<>();    // инициализируем список с врагами
         wave = new Wave();  // инициализируем объект, отвечающий за волны врагов
+        menu = new Menu();  // инициализируем игровое меню
 
-        while (true) { // TODO состояния игры
+        while (true) {
             // инициализируем таймер PFS текущим временем
             fpsTimer = System.currentTimeMillis();
 
-            gameUpdate();
-            gameRender();
-            gameDraw();
+            // Если приложение находится в состоянии меню
+            if (state == STATES.MENU) {
+                background.update();    // обновление фона
+                background.draw(g);     // отрисовка фона
+                menu.draw(g);   // отрисовка меню
+                gameDraw();
+            }
+
+            // Если приложение находится в состоянии игры
+            if (state == STATES.PLAY) {
+                gameUpdate();
+                gameRender();
+                gameDraw();
+            }
 
             /*
                 Следующая строка и условный оператор нужны для того, чтобы получать
                 примерно одинаковое время смены кадров независимо от того, как долго выполняется цикл
-             */
+            */
             fpsTimer = (System.currentTimeMillis() - fpsTimer);
 
             if (millisPerFrame > fpsTimer) {
-                sleepTime = (int)(millisPerFrame - fpsTimer);
+                sleepTime = (int) (millisPerFrame - fpsTimer);
             } else {
                 sleepTime = 1;
             }

@@ -14,6 +14,10 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int WIDTH = 600;    // ширина
     public static final int HEIGHT = 600;   // высота
 
+    public static int mouseX;   // x-координата указателя мыши
+    public static int mouseY;   // y-координата указателя мыши
+    public static boolean isLeftMousePressed;   // нажата ли левая клавиша мыши
+
     private Thread thread = new Thread(this);   // создаем поток
 
     private BufferedImage image;
@@ -25,12 +29,12 @@ public class GamePanel extends JPanel implements Runnable {
     private int sleepTime;  // результирующее время для Thread.sleep()
 
     // состояния игры
-    private enum STATES {
+    public static enum STATES {
         MENU,
         PLAY
     }
 
-    private STATES state = STATES.MENU; // по умолчанию находимся в меню
+    public static STATES state = STATES.MENU; // по умолчанию находимся в меню
 
     public static GameBackground background;  // фон игрового поля
     public static Player player; // игрок
@@ -66,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        isLeftMousePressed = false; // по умолчанию левая кнопка мыши не нажата
         background = new GameBackground();  // инициализируем фон
         player = new Player();  // инициализируем игрока
         bullets = new ArrayList<>();    // инициализируем список с пулями
@@ -81,6 +86,7 @@ public class GamePanel extends JPanel implements Runnable {
             if (state == STATES.MENU) {
                 background.update();    // обновление фона
                 background.draw(g);     // отрисовка фона
+                menu.update();
                 menu.draw(g);   // отрисовка меню
                 gameDraw();
             }

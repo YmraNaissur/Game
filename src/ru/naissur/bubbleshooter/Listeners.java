@@ -31,6 +31,11 @@ public class Listeners implements KeyListener, MouseListener, MouseMotionListene
         if (key == KeyEvent.VK_SPACE) {
             Player.isFiring = true;
         }
+
+        // Если нажимаем Esc, то возвращаемся в меню
+        if (key == KeyEvent.VK_ESCAPE) {
+            GamePanel.state = GamePanel.STATES.MENU;
+        }
     }
 
     @Override
@@ -75,6 +80,8 @@ public class Listeners implements KeyListener, MouseListener, MouseMotionListene
         // Если нажата левая кнопка мыши
         if (e.getButton() == MouseEvent.BUTTON1) {
             Player.isFiring = true; // Игрок начинает стрелять
+            GamePanel.isLeftMousePressed = true; // Нажата левая кнопка мыши
+
         }
     }
 
@@ -84,6 +91,7 @@ public class Listeners implements KeyListener, MouseListener, MouseMotionListene
         // Если отпущена левая кнопка мыши
         if (e.getButton() == MouseEvent.BUTTON1) {
             Player.isFiring = false;    // Игрок перестает стрелять
+            GamePanel.isLeftMousePressed = false;   // Отпущена левая кнопка мыши
         }
     }
 
@@ -99,11 +107,15 @@ public class Listeners implements KeyListener, MouseListener, MouseMotionListene
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        // передаем координаты указателя мыши на игровую панель
+        GamePanel.mouseX = e.getX();
+        GamePanel.mouseY = e.getY();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        // передаем координаты указателя мыши на игровую панель
+        GamePanel.mouseX = e.getX();
+        GamePanel.mouseY = e.getY();
     }
 }

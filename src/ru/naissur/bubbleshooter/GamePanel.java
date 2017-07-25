@@ -52,6 +52,20 @@ public class GamePanel extends JPanel implements Runnable {
         addKeyListener(new Listeners()); // добавляем слушателя клавиатуры
         addMouseMotionListener(new Listeners());    // добавляем слушателя движения мыши
         addMouseListener(new Listeners());  // добавляем слушателя мыши
+
+        // Создаем свой курсор-прицел
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        BufferedImage buffered = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g3 = (Graphics2D) buffered.getGraphics();
+        g3.setColor(Color.GRAY);
+        g3.drawOval(0, 0, 4, 4);
+        g3.drawLine(2, 0, 2, 4);
+        g3.drawLine(0, 2, 4, 2);
+        Cursor cursor = kit.createCustomCursor(buffered, new Point(3, 3), "Aim");
+        g3.dispose();
+
+        // Устанавливаем созданный ранее курсор
+        this.setCursor(cursor);
     }
 
     public void start() {

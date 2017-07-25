@@ -10,11 +10,13 @@ public class Bullet {
     // Поля
     private double x;   // положение по горизонтали
     private double y;   // положение по вертикали
+    private double dx;  // смещение по горизонтали
+    private double dy; // смещение по вертикали
     private int r;  // радиус
 
     private Color color; // цвет
 
-    private int speed; // скорость пули
+    private double speed; // скорость пули
 
     // Конструктор
     public Bullet(double x, double y) {
@@ -24,11 +26,22 @@ public class Bullet {
 
         color = Color.WHITE;    // пули будут белыми
         speed = 10; // пуля будет летать побыстрее, чем игрок
+
+        // Вычисляем расстояние от курсора до пули по теореме Пифагора
+        double distX = GamePanel.mouseX - x;
+        double distY = GamePanel.mouseY - y;
+        double dist = Math.sqrt(distX * distX + distY * distY);
+
+        // Вычисляем величины смещения пули по горизонтали и вертикали
+        dx = (distX / dist) * speed;
+        dy = (distY / dist) * speed;
     }
 
     // Методы
     public void update() {
-        y -= speed; // пуля летит вверх
+        // меняем координаты в соответствии со смещениями по горизонтали и вертикали
+        y += dy;
+        x += dx;
     }
 
     public void draw(Graphics2D g) {
@@ -36,9 +49,9 @@ public class Bullet {
         g.fillOval((int) x, (int) y, r, 2 * r);
     }
 
-    // если пуля улетела за экран, возвращает true
+    // если пуля улетела за любую границу экрана, возвращает true
     public boolean isRemoveNeeded() {
-        return y < 0;
+        return (y < 0 || y > GamePanel.HEIGHT || x < 0 || x > GamePanel.WIDTH);
     }
 
     public double getX() {
